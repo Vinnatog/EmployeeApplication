@@ -17,7 +17,7 @@ namespace EmployeeApplication
         {
             InitializeComponent();
         }
-        Employee emp = new Employee(0, "", "", "");
+        Employee emp = new Employee("", "", "", "");
 
         BindingList<Employee> employeeList = new BindingList<Employee>();
 
@@ -25,7 +25,7 @@ namespace EmployeeApplication
         {
             try
             {
-                int empid = int.Parse(txtEmpID.Text);
+                emp.EmployeeID= emp.EmployeeID;
                 emp.FirstName = txtfname.Text;
                 emp.LastName = txtLname.Text;
                 emp.Position = txtposition.Text;
@@ -39,9 +39,9 @@ namespace EmployeeApplication
                 
                 
 
-                if (!int.TryParse(txtEmpID.Text, out empid)|| empid <= 0)
+               if (string.IsNullOrEmpty(txtEmpID.Text))
                 {
-                    MessageBox.Show("Please enter a valid Employee ID.");
+                    MessageBox.Show("Please enter Employee ID.");
                     txtEmpID.Clear();
                     txtfname.Clear();
                     txtLname.Clear();
@@ -87,7 +87,7 @@ namespace EmployeeApplication
                     return;
                 }
 
-                bool isDuplicate = employeeList.Any(emp => emp.EmployeeID == empid);
+               bool isDuplicate = employeeList.Any(emp => emp.EmployeeID == txtEmpID.Text);
                 if (isDuplicate)
                 {
                     MessageBox.Show("Employee ID already exists. Please enter a unique Employee ID.");
@@ -101,11 +101,8 @@ namespace EmployeeApplication
                 else
                 {
                     dataGridView1.DataSource = employeeList;
-                    employeeList.Add(new Employee(empid, emp.FirstName, emp.LastName, emp.Position));
-                    emp.EmployeeID = empid;
-                    emp.FirstName = txtfname.Text; 
-                    emp.LastName = txtLname.Text; 
-                    emp.Position = txtposition.Text;
+                    employeeList.Add(new Employee(txtEmpID.Text, txtfname.Text, txtLname.Text, txtposition.Text));
+                  
                     txtEmpID.Clear();
                     txtfname.Clear();
                     txtLname.Clear();

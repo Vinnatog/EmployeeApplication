@@ -8,10 +8,10 @@ namespace EmployeeNamespace
 {
     public class Employee
     {
-        private int employeeID;
-        private string firstName, lastname, position;
+        
+        private string employeeID,firstName, lastname, position;
 
-        public int EmployeeID
+        public string EmployeeID
         {
             get { return employeeID; }
             set { employeeID = value; }
@@ -31,7 +31,7 @@ namespace EmployeeNamespace
             get { return position; }
             set { position = value; }
         } 
-        public Employee(int employeeID, string firstName, string lastname, string position)
+        public Employee(string employeeID, string firstName, string lastname, string position)
         {
             this.employeeID = employeeID;
             this.firstName = firstName;
@@ -40,7 +40,7 @@ namespace EmployeeNamespace
         }
         public Employee()
         {
-            this.employeeID = 0;
+            this.employeeID = "";
             this.firstName = "";
             this.lastname = "";
             this.position = "";
