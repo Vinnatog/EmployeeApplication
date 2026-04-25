@@ -17,7 +17,7 @@ namespace EmployeeApplication
         {
             InitializeComponent();
         }
-       Employee emp = new Employee(0, "", "", "");
+        Employee emp = new Employee(0, "", "", "");
 
         BindingList<Employee> employeeList = new BindingList<Employee>();
 
@@ -25,7 +25,7 @@ namespace EmployeeApplication
         {
             try
             {
-                emp.EmployeeID = int.Parse(txtEmpID.Text);
+                int empid = int.Parse(txtEmpID.Text);
                 emp.FirstName = txtfname.Text;
                 emp.LastName = txtLname.Text;
                 emp.Position = txtposition.Text;
@@ -35,40 +35,93 @@ namespace EmployeeApplication
                 dt.Columns.Add("FirstName");
                 dt.Columns.Add("LastName");
                 dt.Columns.Add("Position");
+
                 
                 
-                bool exist = employeeList.Any(emp => emp.EmployeeID == emp.EmployeeID);
-                if (exist)
+
+                if (!int.TryParse(txtEmpID.Text, out empid)|| empid <= 0)
                 {
-                    MessageBox.Show("Employee with this ID already exists.");
-                }else 
+                    MessageBox.Show("Please enter a valid Employee ID.");
+                    txtEmpID.Clear();
+                    txtfname.Clear();
+                    txtLname.Clear();
+                    txtposition.Clear();
+                    txtEmpID.Focus();
+                    return;
+                }
+                else if (string.IsNullOrEmpty(txtfname.Text))
                 {
-                    employeeList.Add(new Employee(emp.EmployeeID, emp.FirstName, emp.LastName, emp.Position));
-                    dataGridView1.DataSource = employeeList;
-                   
+                    MessageBox.Show("Please enter First Name.");
+                    txtEmpID.Clear();
+                    txtfname.Clear();
+                    txtLname.Clear();
+                    txtposition.Clear();
+                    txtEmpID.Focus();
+                    return;
+                }
+                else if (string.IsNullOrEmpty(txtLname.Text))
+                {
+                    MessageBox.Show("Please enter Last Name.");
+                    txtEmpID.Clear();
+                    txtfname.Clear();
+                    txtLname.Clear();
+                    txtposition.Clear();
+                    txtEmpID.Focus();
+                    return;
+                }
+                else if (string.IsNullOrEmpty(txtposition.Text))
+                {
+                    MessageBox.Show("Please enter Position.");
+                    txtposition.Clear();
+                    txtEmpID.Focus();
+                    return;
+                }
+                else if (double.TryParse(txtfname.Text, out _) || double.TryParse(txtLname.Text, out _)|| double.TryParse(txtposition.Text, out _))
+                {
+                    MessageBox.Show("First Name, Last Name, and Position cannot be numeric. Please enter valid text.");
+                    txtEmpID.Clear();
+                    txtfname.Clear();
+                    txtLname.Clear();
+                    txtposition.Clear();
+                    txtEmpID.Focus();
+                    return;
                 }
 
+                bool isDuplicate = employeeList.Any(emp => emp.EmployeeID == empid);
+                if (isDuplicate)
+                {
+                    MessageBox.Show("Employee ID already exists. Please enter a unique Employee ID.");
+                    txtEmpID.Clear();
+                    txtfname.Clear();
+                    txtLname.Clear();
+                    txtposition.Clear();
+                    txtEmpID.Focus();
+                    return;
+                }
+                else
+                {
+                    dataGridView1.DataSource = employeeList;
+                    employeeList.Add(new Employee(empid, emp.FirstName, emp.LastName, emp.Position));
+                    emp.EmployeeID = empid;
+                    emp.FirstName = txtfname.Text; 
+                    emp.LastName = txtLname.Text; 
+                    emp.Position = txtposition.Text;
+                    txtEmpID.Clear();
+                    txtfname.Clear();
+                    txtLname.Clear();
+                    txtposition.Clear();
+                    txtEmpID.Focus();
+                    return;
+                }
+                  }
 
-
-                txtEmpID.Clear();
-                txtfname.Clear();
-                txtLname.Clear();
-                txtposition.Clear();
-                txtEmpID.Focus();
-
-                 
-
-
-
-
-            }
             catch (FormatException ex)
             {
-                MessageBox.Show("Invalid input: " + ex.Message);
+                MessageBox.Show("Invalid input: " + ex.Message + "\nPlease enter valid data.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred: " + ex.Message);
+                MessageBox.Show("An error occurred: " + ex.Message + "\nPlease try again.");
             }
         }
 
@@ -84,10 +137,25 @@ namespace EmployeeApplication
             e.Graphics.DrawString(rowIndex, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Control currentControl = this.ActiveControl;
+                if (currentControl is TextBox)
+                {
+                    e.SuppressKeyPress = true;
+                    this.SelectNextControl(currentControl, true, true, true, true);
+                    e.SuppressKeyPress = true;
+                }
+                else if (currentControl is Button)
+                {
 
+                }
+            }
         }
     }
 }
+    
+
 
