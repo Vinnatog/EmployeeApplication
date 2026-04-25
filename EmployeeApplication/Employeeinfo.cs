@@ -10,32 +10,51 @@ namespace EmployeeNamespace
     {
         private int employeeID;
         private string firstName, lastname, position;
-    }
-    public class EmployeeInfo
-    {
-        public int EmployeeID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Position { get; set; }
-        
-        public EmployeeInfo(int employeeID, string firstName, string lastName, string position)
+
+        public int EmployeeID
         {
-            this.EmployeeID = employeeID;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.Position = position;
-            
+            get { return employeeID; }
+            set { employeeID = value; }
         }
-        public EmployeeInfo()
+        public string FirstName
         {
-            this.EmployeeID = 0;
-            this.FirstName = "";
-            this.LastName = "";
-            this.Position = "";
+            get { return firstName; }
+            set { firstName = value; }
         }
-       
+        public string LastName
+        {
+            get { return lastname; }
+            set { lastname = value; }
+        }
+        public string Position
+        {
+            get { return position; }
+            set { position = value; }
+        } 
+        public Employee(int employeeID, string firstName, string lastname, string position)
+        {
+            this.employeeID = employeeID;
+            this.firstName = firstName;
+            this.lastname = lastname;
+            this.position = position;
+        }
+        public Employee()
+        {
+            this.employeeID = 0;
+            this.firstName = "";
+            this.lastname = "";
+            this.position = "";
+           
+           
+        }
+
+
     }
-    
 }
+
+
+
+    
+
 
 

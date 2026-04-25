@@ -17,18 +17,18 @@ namespace EmployeeApplication
         {
             InitializeComponent();
         }
-        EmployeeInfo empInfo = new EmployeeInfo();
+       Employee emp = new Employee(0, "", "", "");
 
-        BindingList<EmployeeInfo> employeeList = new BindingList<EmployeeInfo>();
+        BindingList<Employee> employeeList = new BindingList<Employee>();
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                empInfo.EmployeeID = int.Parse(txtEmpID.Text);
-                empInfo.FirstName = txtfname.Text;
-                empInfo.LastName = txtLname.Text;
-                empInfo.Position = txtposition.Text;
+                emp.EmployeeID = int.Parse(txtEmpID.Text);
+                emp.FirstName = txtfname.Text;
+                emp.LastName = txtLname.Text;
+                emp.Position = txtposition.Text;
 
                 DataTable dt = new DataTable();
                 dt.Columns.Add("EmployeeID");
@@ -36,8 +36,20 @@ namespace EmployeeApplication
                 dt.Columns.Add("LastName");
                 dt.Columns.Add("Position");
                 
-                employeeList.Add(new EmployeeInfo(empInfo.EmployeeID, empInfo.FirstName, empInfo.LastName, empInfo.Position));
-                dataGridView1.DataSource = employeeList;
+                
+                bool exist = employeeList.Any(emp => emp.EmployeeID == emp.EmployeeID);
+                if (exist)
+                {
+                    MessageBox.Show("Employee with this ID already exists.");
+                }else 
+                {
+                    employeeList.Add(new Employee(emp.EmployeeID, emp.FirstName, emp.LastName, emp.Position));
+                    dataGridView1.DataSource = employeeList;
+                   
+                }
+
+
+
                 txtEmpID.Clear();
                 txtfname.Clear();
                 txtLname.Clear();
@@ -70,6 +82,11 @@ namespace EmployeeApplication
             };
             Rectangle headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, dataGridView1.RowHeadersWidth, e.RowBounds.Height);
             e.Graphics.DrawString(rowIndex, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
